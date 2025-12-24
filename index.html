@@ -4,7 +4,8 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Generator Nota Otomatis</title>
-  <style>
+  <link href="https://fonts.googleapis.com/css2?family=Merriweather:wght@700&family=Lora:wght@400;600&display=swap" rel="stylesheet">
+<style>
     body {
       font-family: Arial, sans-serif;
       background: #f4f4f4;
@@ -81,58 +82,62 @@
   function tambahBarang() {
     const nama = document.getElementById("namabarang").value;
     const qty = Number(document.getElementById("qty").value);
+    const satuan = document.getElementById("satuan").value;
     const subtotal = Number(document.getElementById("subtotal").value);
 
-    if (!nama || subtotal <= 0) {
+    if (!nama || !satuan || subtotal <= 0) {
       alert("Data barang belum lengkap");
       return;
     }
 
-    daftarBarang.push({ nama, qty, subtotal });
+    daftarBarang.push({ nama, satuan, qty, subtotal });
 
     document.getElementById("namabarang").value = "";
+    document.getElementById("satuan").value = "";
     document.getElementById("qty").value = "";
     document.getElementById("subtotal").value = "";
+
 
     alert("Barang berhasil ditambahkan");
   }
 
-  function generateNota() {
+async function generateNota() {
+  await document.fonts.ready;
     const num = document.getElementById("notanumber").value;
     const tuan = document.getElementById("tuan").value;
     const toko = document.getElementById("toko").value;
     const tgl = document.getElementById("tanggal").value;
     const grs = document.getElementById("garansi").value;
-    const stn = document.getElementById("satuan").value;
 
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     ctx.drawImage(notaImg, 0, 0, canvas.width, canvas.height);
 
     ctx.fillStyle = "#000";
-    ctx.font = "14px Arial";
+    ctx.font = "14px Merriweather";
 
     // Header nota (sesuai koordinat kamu)
     ctx.fillText(num, 115, 165);
     ctx.fillText(tuan, 115, 185);
     ctx.fillText(toko, 115, 205);
     ctx.fillText(tgl, 283, 185);
-    ctx.fillText(stn, 75, 255);
 
     let startY = 255; // baris barang pertama
     let jarak = 22;   // jarak antar baris
     let grandTotal = 0;
 
+ctx.font = "14px Lora";
     daftarBarang.forEach((item, index) => {
       const y = startY + index * jarak;
       grandTotal += item.subtotal;
 
       ctx.fillText(item.qty, 60, y);
+      ctx.fillText(item.satuan, 75, y);
       ctx.fillText(item.nama, 125, y);
       ctx.fillText("Rp " + item.subtotal.toLocaleString(), 283, y);
     });
 
 if (daftarBarang.length >= 1) {
-ctx.font = "16px Arial";
+ctx.font = "16px Lora";
 drawMultilineText(
 ctx, 
 grs, 
@@ -143,7 +148,7 @@ startY + daftarBarang.length * jarak,
 }
 
     // TOTAL AKHIR (hanya muncul kalau lebih dari 1 barang)
-      ctx.font = "16px Arial";
+      ctx.font = "18px Merriweather, 'Times New Roman', serif";
       ctx.fillText("Rp " + grandTotal.toLocaleString(), 283, 409);
   }
 
@@ -219,7 +224,3 @@ function drawMultilineText(ctx, text, x, y, maxWidth, lineHeight) {
 
 </body>
 </html>
-
-
-
-
