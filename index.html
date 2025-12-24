@@ -155,19 +155,35 @@ link.click();
 }
 
 async function shareNota() {
-  const blob = await new Promise(resolve =>
-    canvas.toBlob(resolve, "image/png")
-  );
+  canvas.toBlob(async (blob) => {
+    if (!blob) {
+      alert("Nota belum siap");
+      return;
+    }
 
-  const file = new File([blob], "nota.png", { type: "image/png" });
+    const file = new File(
+      [blob],
+      "Nota_" + Date.now() + ".png",
+      {
+        type: "image/png",
+        lastModified: Date.now()
+      }
+    );
 
-  if (navigator.canShare && navigator.canShare({ files: [file] })) {
-    navigator.share({
-      files: [file]
-    });
-  } else {
-    alert("Browser tidak mendukung share. Silakan download manual.");
-  }
+    if (navigator.canShare && navigator.canShare({ files: [file] })) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: "Nota Transaksi",
+          text: " "
+        });
+      } catch (e) {
+        alert("WA Business menolak file ini");
+      }
+    } else {
+      alert("Share tidak didukung");
+    }
+  });
 }
 
 function drawMultilineText(ctx, text, x, y, maxWidth, lineHeight) {
@@ -202,5 +218,6 @@ function drawMultilineText(ctx, text, x, y, maxWidth, lineHeight) {
 
 </body>
 </html>
+
 
 
