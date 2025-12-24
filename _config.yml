@@ -1,0 +1,3 @@
+theme: jekyll-theme-cayman
+title: Automatic Service Invoice Generator
+description: A simple web-based service invoice generator using HTML Canvas that automatically creates, downloads, and shares invoice images from a single template.
