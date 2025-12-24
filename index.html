@@ -155,11 +155,6 @@ link.click();
 }
 
 async function shareNota() {
-const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
-const file = new File([blob], "nota.png", { type: "image/png" });
-
-
-async function shareNota() {
   const blob = await new Promise(resolve =>
     canvas.toBlob(resolve, "image/png")
   );
@@ -207,4 +202,5 @@ function drawMultilineText(ctx, text, x, y, maxWidth, lineHeight) {
 
 </body>
 </html>
+
 
