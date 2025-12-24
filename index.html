@@ -159,15 +159,20 @@ const blob = await new Promise(resolve => canvas.toBlob(resolve, "image/png"));
 const file = new File([blob], "nota.png", { type: "image/png" });
 
 
-if (navigator.canShare && navigator.canShare({ files: [file] })) {
-navigator.share({
-files: [file],
-title: "Nota Pembelian",
-text: "Berikut nota pembelian"
-});
-} else {
-alert("Browser tidak mendukung share langsung. Silakan download lalu kirim manual via WhatsApp / Telegram.");
-}
+async function shareNota() {
+  const blob = await new Promise(resolve =>
+    canvas.toBlob(resolve, "image/png")
+  );
+
+  const file = new File([blob], "nota.png", { type: "image/png" });
+
+  if (navigator.canShare && navigator.canShare({ files: [file] })) {
+    navigator.share({
+      files: [file]
+    });
+  } else {
+    alert("Browser tidak mendukung share. Silakan download manual.");
+  }
 }
 
 function drawMultilineText(ctx, text, x, y, maxWidth, lineHeight) {
@@ -202,3 +207,4 @@ function drawMultilineText(ctx, text, x, y, maxWidth, lineHeight) {
 
 </body>
 </html>
+
